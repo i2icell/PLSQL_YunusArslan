@@ -47,6 +47,17 @@ REFERENCES PACK_DEF
   PACKAGE_ID 
 )
 ENABLE;
+
+ALTER TABLE USER_PKG_BALANCE
+ADD CONSTRAINT USER_PKG_BALANCE_FK3 FOREIGN KEY
+(
+  PHONE_NUMBER 
+)
+REFERENCES PACK_DEF
+(
+  PHONE_NUMBER 
+)
+ENABLE;
                           
                                
 CREATE TABLE SUBSCRIPTION (USER_ID      NUMBER PRIMARY KEY,
@@ -55,6 +66,16 @@ CREATE TABLE SUBSCRIPTION (USER_ID      NUMBER PRIMARY KEY,
                           EDATE         DATE);
                           
                           
+ALTER TABLE SUBSCRIPTION
+ADD CONSTRAINT SUBSCRIPTION_FK1 FOREIGN KEY
+(
+  USER_ID 
+)
+REFERENCES USER_INFO
+(
+  USER_ID 
+)
+ENABLE;
                           
                           
                           
