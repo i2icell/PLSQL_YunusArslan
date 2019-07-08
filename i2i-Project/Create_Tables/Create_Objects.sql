@@ -80,12 +80,13 @@ REFERENCES USER_INFO
 )
 ENABLE;
                           
-                          
-                          
-                          
-                          
-                          
-                          
+--CREATE BALANCE TABLE
+
+CREATE TABLE REMAIN_BALANCE (  PHONE_NUMBER    VARCHAR2(10),
+                        GB_REM          NUMBER(5,2),
+                        MINUTE_REM      NUMBER(4),
+                        SMS_REM         NUMBER(5));
+
                           
                           
                           
