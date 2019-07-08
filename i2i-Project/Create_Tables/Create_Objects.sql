@@ -1,3 +1,4 @@
+COMMENT ON TABLE USER_INFO IS 'This table contains all informations of users.';
 CREATE TABLE USER_INFO (USER_ID         NUMBER          NOT NULL  PRIMARY KEY,   
                         FIRST_NAME      VARCHAR2(50)    NOT NULL, 
                         LAST_NAME       VARCHAR2(50)    NOT NULL, 
@@ -10,14 +11,14 @@ CREATE TABLE USER_INFO (USER_ID         NUMBER          NOT NULL  PRIMARY KEY,
                         
                     
            
-                        
+COMMENT ON TABLE PACK_DEF IS 'This table contains package names and their contents.';                        
 CREATE TABLE PACK_DEF  (PACKAGE_ID      NUMBER PRIMARY KEY NOT NULL,
                         PACKAGE_NAME    VARCHAR2(100),
                         DATA_GB         NUMBER,
                         VOICE           NUMBER,
                         SMS             NUMBER);
                         
-                        
+COMMENT ON TABLE USER_PKG_BALANCE IS 'This table shows all remain package contents.';                        
 CREATE TABLE USER_PKG_BALANCE (USER_ID      NUMBER,
                                PACKAGE_ID   NUMBER,
                                BILL_PERIOD  NUMBER,
@@ -48,6 +49,7 @@ REFERENCES PACK_DEF
 )
 ENABLE;
 
+
 ALTER TABLE USER_PKG_BALANCE
 ADD CONSTRAINT USER_PKG_BALANCE_FK3 FOREIGN KEY
 (
@@ -59,7 +61,8 @@ REFERENCES PACK_DEF
 )
 ENABLE;
                           
-                               
+                          
+COMMENT ON TABLE SUBSCRIPTION IS 'This table shows periods of packages.';                                              
 CREATE TABLE SUBSCRIPTION (USER_ID      NUMBER PRIMARY KEY,
                           PACKAGE_ID    NUMBER,
                           SDATE         DATE,
