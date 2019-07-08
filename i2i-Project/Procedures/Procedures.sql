@@ -19,9 +19,12 @@ CREATE OR REPLACE PROCEDURE GET_BALANCES(   PIS_PHONE IN VARCHAR2,
                                             REMAIN_GB OUT NUMBER, 
                                             REMAIN_MIN OUT NUMBER, 
                                             REMAIN_SMS OUT NUMBER) IS
-FIRSTNAME VARCHAR2(50);
-CHECKER NUMBER ;
+FIRSTNAME   VARCHAR2(50);
+CHECKER     NUMBER ;
 RANDOM_NUMBER NUMBER(5);
+WARN_GB     NUMBER(5,2);
+WARN_MIN    NUMBER;
+WARN_SMS    NUMBER;
 BEGIN
     SELECT COUNT(*)INTO CHECKER FROM USER_INFO WHERE PHONE_NUMBER=PIS_PHONE;
     IF CHECKER=1 THEN
@@ -37,12 +40,23 @@ BEGIN
             UPDATE REMAIN_BALANCE SET   GB_REM=REMAIN_GB,
                                         MINUTE_REM=REMAIN_MIN,
                                         SMS_REM=REMAIN_SMS 
-                                  WHERE PHONE_NUMBER=PIS_PHONE;
-                                  
+                                  WHERE PHONE_NUMBER=PIS_PHONE;              
             DBMS_OUTPUT.PUT_LINE('Merhaba ' || FIRSTNAME || ',');
             DBMS_OUTPUT.PUT_LINE('Kalan GB: ' ||  REMAIN_GB);
             DBMS_OUTPUT.PUT_LINE('Kalan Dakika: ' || REMAIN_MIN);
             DBMS_OUTPUT.PUT_LINE('Kalan Sms: ' || REMAIN_SMS);
+            SELECT DATA_GB_BAL, VOICE_BAL, SMS_BAL INTO WARN_GB,WARN_MIN,WARN_SMS
+            FROM USER_PKG_BALANCE WHERE PHONE_NUMBER=PIS_PHONE;
+            
+            IF REMAIN_GB<WARN_GB/5
+            THEN DBMS_OUTPUT.PUT_LINE('Internetinizin %80inini kullandýnýz.');
+            END IF;
+            IF REMAIN_MIN<WARN_MIN/5
+            THEN DBMS_OUTPUT.PUT_LINE('Dakikanýzýn %80inini kullandýnýz.');
+            END IF;
+            IF REMAIN_SMS<WARN_SMS/5
+            THEN DBMS_OUTPUT.PUT_LINE('Smslerinizin %80inini kullandýnýz.');
+            END IF;
             COMMIT;
             
     ELSE    SELECT DATA_GB_BAL,VOICE_BAL,SMS_BAL INTO REMAIN_GB, REMAIN_MIN, REMAIN_SMS
