@@ -193,10 +193,17 @@ END LIST_PACKAGES;
 /
 
 
-CREATE OR REPLACE PROCEDURE SHOW_PROFILE (PIS_PHONE IN VARCHAR2, FNAME OUT VARCHAR2, LNAME OUT VARCHAR2, E_MAIL OUT VARCHAR2, PACK_NAME OUT VARCHAR2) IS
-GB_FULL NUMBER;
-MIN_FULL NUMBER;
-SMS_FULL NUMBER;
+CREATE OR REPLACE PROCEDURE SHOW_PROFILE (  PIS_PHONE   IN VARCHAR2, 
+                                            FNAME       OUT VARCHAR2, 
+                                            LNAME       OUT VARCHAR2, 
+                                            E_MAIL      OUT VARCHAR2, 
+                                            PACK_NAME   OUT VARCHAR2, 
+                                            GB_FULL     OUT NUMBER, 
+                                            MIN_FULL    OUT NUMBER, 
+                                            SMS_FULL    OUT NUMBER) IS
+
+
+
 BEGIN
     SELECT FIRST_NAME,LAST_NAME,EMAIL INTO FNAME,LNAME,E_MAIL FROM USER_INFO
     WHERE PHONE_NUMBER=PIS_PHONE;
