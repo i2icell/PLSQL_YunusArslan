@@ -34,17 +34,19 @@ BEGIN
     
     IF REMAIN_GB>0 AND REMAIN_MIN>0 AND REMAIN_SMS>0
     THEN SELECT ROUND(DBMS_RANDOM.VALUE(1,10)) RANDOM INTO RANDOM_NUMBER FROM DUAL;
+            DBMS_OUTPUT.PUT_LINE('Merhaba ' || FIRSTNAME || ',');
+            DBMS_OUTPUT.PUT_LINE('Kalan GB: ' ||  REMAIN_GB);
+            DBMS_OUTPUT.PUT_LINE('Kalan Dakika: ' || REMAIN_MIN);
+            DBMS_OUTPUT.PUT_LINE('Kalan Sms: ' || REMAIN_SMS);
+            
             REMAIN_GB   :=  REMAIN_GB-RANDOM_NUMBER/50;
             REMAIN_MIN  :=  REMAIN_MIN-2*RANDOM_NUMBER+1;
             REMAIN_SMS  :=  REMAIN_SMS-RANDOM_NUMBER-4;
             UPDATE REMAIN_BALANCE SET   GB_REM=REMAIN_GB,
                                         MINUTE_REM=REMAIN_MIN,
                                         SMS_REM=REMAIN_SMS 
-                                  WHERE PHONE_NUMBER=PIS_PHONE;              
-            DBMS_OUTPUT.PUT_LINE('Merhaba ' || FIRSTNAME || ',');
-            DBMS_OUTPUT.PUT_LINE('Kalan GB: ' ||  REMAIN_GB);
-            DBMS_OUTPUT.PUT_LINE('Kalan Dakika: ' || REMAIN_MIN);
-            DBMS_OUTPUT.PUT_LINE('Kalan Sms: ' || REMAIN_SMS);
+                                  WHERE PHONE_NUMBER=PIS_PHONE;
+                                  
             SELECT DATA_GB_BAL, VOICE_BAL, SMS_BAL INTO WARN_GB,WARN_MIN,WARN_SMS
             FROM USER_PKG_BALANCE WHERE PHONE_NUMBER=PIS_PHONE;
             
