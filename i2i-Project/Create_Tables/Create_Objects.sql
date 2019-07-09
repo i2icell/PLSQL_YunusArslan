@@ -55,7 +55,7 @@ ADD CONSTRAINT USER_PKG_BALANCE_FK3 FOREIGN KEY
 (
   PHONE_NUMBER 
 )
-REFERENCES PACK_DEF
+REFERENCES USER_INFO
 (
   PHONE_NUMBER 
 )
@@ -89,6 +89,4 @@ CREATE TABLE REMAIN_BALANCE (  PHONE_NUMBER    VARCHAR2(10),
 
                           
                           
-                          
-                          
-                          
+                                                  
