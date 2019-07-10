@@ -223,23 +223,27 @@ CREATE OR REPLACE PROCEDURE SHOW_PROFILE (  PIS_PHONE   IN VARCHAR2,
                                             PACK_NAME   OUT VARCHAR2, 
                                             GB_FULL     OUT NUMBER, 
                                             MIN_FULL    OUT NUMBER, 
-                                            SMS_FULL    OUT NUMBER) IS
+                                            SMS_FULL    OUT NUMBER,
+                                            CHECKER     OUT NUMBER) IS
 
 CHECK_PHONE     NUMBER;
 BEGIN
     SELECT COUNT(*)INTO CHECK_PHONE FROM USER_INFO WHERE PHONE_NUMBER=PIS_PHONE;
     IF CHECK_PHONE=1 THEN
-    SELECT FIRST_NAME,LAST_NAME,EMAIL INTO FNAME,LNAME,E_MAIL FROM USER_INFO
-    WHERE PHONE_NUMBER=PIS_PHONE;
-    
-    SELECT PACKAGE_NAME,DATA_GB,VOICE,SMS INTO PACK_NAME,GB_FULL,MIN_FULL,SMS_FULL FROM PACK_DEF
-    WHERE PACKAGE_ID=(SELECT PACKAGE_ID FROM USER_PKG_BALANCE WHERE PHONE_NUMBER=PIS_PHONE);
-    
-    DBMS_OUTPUT.PUT_LINE('Ýsminiz: '||FNAME||' '||LNAME);
-    DBMS_OUTPUT.PUT_LINE('Mailiniz: '||E_MAIL);
-    DBMS_OUTPUT.PUT_LINE('Paketiniz: '||PACK_NAME);
-    DBMS_OUTPUT.PUT_LINE('Paketinizin içeriði: '||GB_FULL||' GB '||MIN_FULL||' Minutes '||SMS_FULL||' SMS ');
-    ELSE DBMS_OUTPUT.PUT_LINE('Telefon numarasý yanlýþ.');
+        SELECT FIRST_NAME,LAST_NAME,EMAIL INTO FNAME,LNAME,E_MAIL FROM USER_INFO
+        WHERE PHONE_NUMBER=PIS_PHONE;
+        
+        SELECT PACKAGE_NAME,DATA_GB,VOICE,SMS INTO PACK_NAME,GB_FULL,MIN_FULL,SMS_FULL FROM PACK_DEF
+        WHERE PACKAGE_ID=(SELECT PACKAGE_ID FROM USER_PKG_BALANCE WHERE PHONE_NUMBER=PIS_PHONE);
+        
+        DBMS_OUTPUT.PUT_LINE('Ýsminiz: '||FNAME||' '||LNAME);
+        DBMS_OUTPUT.PUT_LINE('Mailiniz: '||E_MAIL);
+        DBMS_OUTPUT.PUT_LINE('Paketiniz: '||PACK_NAME);
+        DBMS_OUTPUT.PUT_LINE('Paketinizin içeriði: '||GB_FULL||' GB '||MIN_FULL||' Minutes '||SMS_FULL||' SMS ');
+        CHECKER:=1;
+    ELSE 
+        CHECKER:=0;
+        DBMS_OUTPUT.PUT_LINE('Telefon numarasý yanlýþ.');
     END IF;
 END SHOW_PROFILE;
 /
