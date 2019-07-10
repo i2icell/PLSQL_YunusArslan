@@ -223,8 +223,7 @@ CREATE OR REPLACE PROCEDURE SHOW_PROFILE (  PIS_PHONE   IN VARCHAR2,
                                             PACK_NAME   OUT VARCHAR2, 
                                             GB_FULL     OUT NUMBER, 
                                             MIN_FULL    OUT NUMBER, 
-                                            SMS_FULL    OUT NUMBER,
-                                            CHECKER     OUT NUMBER) IS
+                                            SMS_FULL    OUT NUMBER) IS
 
 CHECK_PHONE     NUMBER;
 BEGIN
@@ -240,10 +239,15 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Mailiniz: '||E_MAIL);
         DBMS_OUTPUT.PUT_LINE('Paketiniz: '||PACK_NAME);
         DBMS_OUTPUT.PUT_LINE('Paketinizin içeriði: '||GB_FULL||' GB '||MIN_FULL||' Minutes '||SMS_FULL||' SMS ');
-        CHECKER:=1;
     ELSE 
-        CHECKER:=0;
         DBMS_OUTPUT.PUT_LINE('Telefon numarasý yanlýþ.');
+        FNAME       :=0;
+        LNAME       :=0;
+        E_MAIL      :=0;
+        PACK_NAME   :=0; 
+        GB_FULL     :=0;
+        MIN_FULL    :=0; 
+        SMS_FULL    :=0;
     END IF;
 END SHOW_PROFILE;
 /
