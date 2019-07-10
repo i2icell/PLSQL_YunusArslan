@@ -166,21 +166,28 @@ CREATE OR REPLACE PROCEDURE BUY_NEW_PACKAGE(PIS_PHONE           IN VARCHAR2,
 REMAIN_GB   NUMBER;
 REMAIN_MIN  NUMBER;
 REMAIN_SMS  NUMBER;
+CHECK_PACK  NUMBER;
 BEGIN
-    SELECT DATA_GB,VOICE,SMS INTO REMAIN_GB, REMAIN_MIN, REMAIN_SMS FROM PACK_DEF WHERE PACKAGE_ID=PIS_PACKAGE_ID;
-    UPDATE USER_PKG_BALANCE SET PACKAGE_ID=PIS_PACKAGE_ID,
-                                DATA_GB_BAL=REMAIN_GB,
-                                VOICE_BAL=REMAIN_MIN,
-                                SMS_BAL=REMAIN_SMS,
-                                BILL_PERIOD=PIS_PERIOD
-                            WHERE PHONE_NUMBER=PIS_PHONE;
-    UPDATE REMAIN_BALANCE   SET GB_REM=REMAIN_GB,
-                                MINUTE_REM=REMAIN_MIN,
-                                SMS_REM=REMAIN_SMS
-                            WHERE PHONE_NUMBER=PIS_PHONE;
-    CHECKER:=1;
-    DBMS_OUTPUT.PUT_LINE(CHECKER);
-    COMMIT;
+    SELECT COUNT(*)INTO CHECK_PACK FROM PACK_DEF WHERE PACKAGE_ID = PIS_PACKAGE_ID;
+    IF CHECK_PACK=1 THEN 
+        SELECT DATA_GB,VOICE,SMS INTO REMAIN_GB, REMAIN_MIN, REMAIN_SMS FROM PACK_DEF WHERE PACKAGE_ID=PIS_PACKAGE_ID;
+        UPDATE USER_PKG_BALANCE SET PACKAGE_ID=PIS_PACKAGE_ID,
+                                    DATA_GB_BAL=REMAIN_GB,
+                                    VOICE_BAL=REMAIN_MIN,
+                                    SMS_BAL=REMAIN_SMS,
+                                    BILL_PERIOD=PIS_PERIOD
+                                WHERE PHONE_NUMBER=PIS_PHONE;
+        UPDATE REMAIN_BALANCE   SET GB_REM=REMAIN_GB,
+                                    MINUTE_REM=REMAIN_MIN,
+                                    SMS_REM=REMAIN_SMS
+                                WHERE PHONE_NUMBER=PIS_PHONE;
+        CHECKER:=1;
+        DBMS_OUTPUT.PUT_LINE('Yeni paketin hesabýna tanýmlandý.');
+        COMMIT;
+        ELSE
+        CHECKER:=0;
+        DBMS_OUTPUT.PUT_LINE('Paket tanýmlanamadý. Ýstenilen paket mevcut deðil.');
+        END IF;
 END BUY_NEW_PACKAGE;
 /
 
